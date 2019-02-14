@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kiah.tule.mapper.TRoomInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.kiah.tule.model.TRoomInfo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="no" property="no" jdbcType="VARCHAR" />
+    <result column="mc" property="mc" jdbcType="VARCHAR" />
+    <result column="lx" property="lx" jdbcType="VARCHAR" />
+    <result column="zt" property="zt" jdbcType="VARCHAR" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="cjsj" property="cjsj" jdbcType="TIMESTAMP" />
+    <result column="gxsj" property="gxsj" jdbcType="TIMESTAMP" />
+    <result column="cjr" property="cjr" jdbcType="VARCHAR" />
+    <result column="sfsc" property="sfsc" jdbcType="CHAR" />
+  </resultMap>
+  <select id="listYdRoom" resultType="com.kiah.tule.vo.VoRoomYd" parameterType="java.util.Map">
+    select tri.id as fjid,tri.no as fjno,tri.mc as fjmc, tri.lx as fjlx,tri.zt as fjzt,tri.cjr as fjcjr,trm.id as jlid,trm.rzts as jlrzts,trm.rzsj as jlrzsj,trm.tfsj as jltfsj,trm.yj as jlyj,trm.styj as jlstyj,trm.je as jlje,trm.dfr as jldfr,trm.qd as jlqd,trm.cjr as jlcjr,trm.bz as jlbz
+    from t_room_record trm,t_room_info tri
+    where trm.no=tri.no and trm.sfjh=#{sfjh} and tri.zt=#{zt} and (tri.no like #{keywords} or tri.mc like #{keywords})
+  </select>
+  <select id="listRzRoom" resultType="com.kiah.tule.vo.VoRoomRz" parameterType="java.util.Map">
+    SELECT
+	tri.id AS fjid,
+	tri. NO AS fjno,
+	tri.mc AS fjmc,
+	tri.lx AS fjlx,
+	tri.zt AS fjzt,
+	tri.cjr AS fjcjr,
+	trm.id AS jlid,
+	trm.rzts AS jlrzts,
+	trm.rzsj AS jlrzsj,
+	trm.tfsj AS jltfsj,
+	trm.yj AS jlyj,
+	trm.styj AS jlstyj,
+	trm.je AS jlje,
+	trm.dfr AS jldfr,
+	trm.qd AS jlqd,
+	trm.cjr AS jlcjr,
+	trm.bz AS jlbz,
+	trc.id AS lkid,
+	trc.jlid AS lkjlid,
+	trc.xm AS lkxm,
+	trc.dh AS lkdh,
+	trc.zjhm AS lkzjhm
+	FROM t_room_record trm
+	LEFT JOIN t_room_info tri ON trm. NO = tri. NO
+	LEFT JOIN (select cc.* from t_room_customer cc,t_room_record dd where cc.jlid = dd.id GROUP BY cc.jlid) trc ON trm.id = trc.jlid
+	WHERE trm.sfjh=#{sfjh}
+	AND tri.zt=#{zt}
+	AND (tri.no like #{keywords} or tri.mc like #{keywords})
+    <if test="startTime!= null and endTime!=null" >
+		AND trm.tfsj BETWEEN #{startTime} AND #{endTime}
+    </if>
+	ORDER BY trm.tfsj asc
+  </select>
+	<select id="tjFjxx" resultType="map">
+		SELECT zt,count(1) sl FROM t_room_info WHERE zt in ('入住','待打扫')  GROUP BY zt
+		UNION
+		SELECT "预定" zt,IFNULL(sum(y.c),0) sl FROM (SELECT count(fjid) c FROM t_room_reservation rr WHERE rr.sfjh = '0' GROUP BY rr.fjid) y
+		UNION
+		SELECT '今日空房' zt,count(DISTINCT info.no) sl
+		FROM
+			t_room_info info
+		LEFT JOIN t_room_reservation t ON info.no = t.no
+		AND t.sfjh = '0'
+		AND (t.rzsj NOT BETWEEN #{startTime} AND #{endTime})
+		WHERE info.zt = '空房'
+		UNION
+		SELECT '今日待入住' zt,count(t.id) sl FROM t_room_reservation t WHERE t.sfjh='0' AND t.rzsj BETWEEN #{startTime} AND #{endTime}
+		UNION
+		SELECT '今日待退房' zt,count(t.id) sl FROM t_room_record t WHERE t.sfjh='0' AND t.tfsj BETWEEN #{startTime} AND #{endTime};
+	</select>
+	<select id="ydData" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from t_room_info info
+		where info.no not in(
+		SELECT t.no from t_room_reservation t
+		where ((t.rzsj &gt;= #{kssj} and t.rzsj &lt;= #{jssj})
+		or (t.rzsj &lt;=#{kssj} and t.tfsj &gt;= #{jssj})
+		or (t.tfsj &gt;= #{kssj} and t.tfsj &lt;= #{jssj})
+		or (t.rzsj &gt;= #{kssj} and t.tfsj &lt;= #{jssj}))
+	  	and t.sfjh = '0'
+		)
+		and info.no not in(
+		SELECT t2.no from t_room_record t2
+		where ((t2.rzsj &gt;= #{kssj} and t2.rzsj &lt;= #{jssj})
+		or (t2.rzsj &lt;=#{kssj} and t2.tfsj &gt;= #{jssj})
+		or (t2.tfsj &gt;= #{kssj} and t2.tfsj &lt;= #{jssj})
+		or (t2.rzsj &gt;= #{kssj} and t2.tfsj &lt;= #{jssj}))
+		)
+		and  info.lx like concat(concat('%',#{lx}),'%')
+		order by info.no+0
+	</select>
+	<!--
+	select * from t_room_info info
+		where info.no not in(
+		SELECT t.no from t_room_reservation t
+		where ((t.rzsj &gt;= #{kssj} and t.rzsj &lt;= #{jssj})
+		or (t.rzsj &lt;=#{kssj} and t.tfsj &gt;= #{jssj})
+		or (t.tfsj &gt;= #{kssj} and t.tfsj &lt;= #{jssj})
+		or (t.rzsj &gt;= #{kssj} and t.tfsj &lt;= #{jssj}))
+	    and t.sfjh = '0'
+		)
+		and info.zt = #{zt}
+		and  (info.no like concat(concat('%',#{no}),'%') or info.mc like concat(concat('%',#{mc}),'%'))
+		order  by info.no
+	-->
+	<select id="kfListRoom" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT DISTINCT info.* FROM t_room_info info
+		LEFT JOIN t_room_reservation t on info.no = t.no AND  t.sfjh = '0'
+		AND  (t.rzsj NOT BETWEEN #{kssj} AND #{jssj})
+		WHERE info.zt = #{zt}
+		AND (info.no LIKE concat(concat('%',#{no}),'%') OR info.mc LIKE concat(concat('%',#{mc}),'%'))
+		ORDER BY info.no+0
+	</select>
+</mapper>

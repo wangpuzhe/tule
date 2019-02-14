@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kiah.tule.mapper.TRoomReservationMapper" >
+  <resultMap id="BaseResultMap" type="com.kiah.tule.model.TRoomReservation" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="no" property="no" jdbcType="INTEGER" />
+    <result column="fjid" property="fjid" jdbcType="INTEGER" />
+    <result column="mc" property="mc" jdbcType="VARCHAR" />
+    <result column="dfr" property="dfr" jdbcType="VARCHAR" />
+    <result column="rzts" property="rzts" jdbcType="INTEGER" />
+    <result column="rzsj" property="rzsj" jdbcType="TIMESTAMP" />
+    <result column="tfsj" property="tfsj" jdbcType="TIMESTAMP" />
+    <result column="je" property="je" jdbcType="DECIMAL" />
+    <result column="qd" property="qd" jdbcType="VARCHAR" />
+    <result column="jbr" property="jbr" jdbcType="VARCHAR" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="cjsj" property="cjsj" jdbcType="TIMESTAMP" />
+    <result column="gxsj" property="gxsj" jdbcType="TIMESTAMP" />
+    <result column="sfjh" property="sfjh" jdbcType="VARCHAR" />
+    <result column="dfrdhhm" property="dfrdhhm" jdbcType="VARCHAR" />
+  </resultMap>
+  <update id="updateById" parameterType="java.lang.String">
+    update t_room_reservation set sfjh ='1' where id = #{reservationId}
+  </update>
+  <select id="checkRoomIsUse" parameterType="java.util.Map" resultType="java.lang.Integer">
+    SELECT count(1) from t_room_reservation t
+		where ((t.rzsj &gt;= #{kssj} and t.rzsj &lt;= #{jssj})
+		or (t.rzsj &lt;=#{kssj} and t.tfsj &gt;= #{jssj})
+		or (t.tfsj &gt;= #{kssj} and t.tfsj &lt;= #{jssj})
+		or (t.rzsj &gt;= #{kssj} and t.tfsj &lt;= #{jssj}))
+	    and t.sfjh = '0' AND t.fjid = #{fjid}
+  </select>
+  <insert id="insertXzYdjl" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <selectKey resultType="int" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() as id
+    </selectKey>
+    insert into t_room_reservation (fjid,no,mc,dfrdhhm,dfr,rzts,rzsj,tfsj,je,qd,jbr,bz,sfjh,cjsj)
+    select
+    t.fjid,t.`no`,t.mc,t.dfrdhhm,t.dfr,#{xzts},t.tfsj,#{xzsj},#{xzff},#{xzqd},#{xzjbr},#{xzbz},'1',now()
+    from
+    t_room_reservation t
+    where t.id = (
+    select ydid from t_room_record where id = #{oldId}
+    )
+  </insert>
+</mapper>

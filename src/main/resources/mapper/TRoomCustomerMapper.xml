@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kiah.tule.mapper.TRoomCustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.kiah.tule.model.TRoomCustomer" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="jlid" property="jlid" jdbcType="INTEGER" />
+    <result column="xm" property="xm" jdbcType="VARCHAR" />
+    <result column="zjhm" property="zjhm" jdbcType="VARCHAR" />
+    <result column="dh" property="dh" jdbcType="VARCHAR" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="cjsj" property="cjsj" jdbcType="TIMESTAMP" />
+    <result column="gxsj" property="gxsj" jdbcType="TIMESTAMP" />
+    <result column="cjr" property="cjr" jdbcType="VARCHAR" />
+    <result column="sfsc" property="sfsc" jdbcType="CHAR" />
+  </resultMap>
+  <insert id="insertXzLkjl" parameterType="java.util.Map">
+    insert into t_room_customer (jlid,xm,zjhm,dh,cjsj)
+    select  #{id},t.xm,t.zjhm,t.dh,now()
+    from t_room_customer t
+    where t.jlid = #{oldId}
+  </insert>
+</mapper>

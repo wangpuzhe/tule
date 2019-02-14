@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kiah.tule.mapper.TRoomRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.kiah.tule.model.TRoomRecord" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="no" property="no" jdbcType="VARCHAR" />
+    <result column="rzts" property="rzts" jdbcType="INTEGER" />
+    <result column="rzsj" property="rzsj" jdbcType="TIMESTAMP" />
+    <result column="tfsj" property="tfsj" jdbcType="TIMESTAMP" />
+    <result column="yj" property="yj" jdbcType="DECIMAL" />
+    <result column="je" property="je" jdbcType="DECIMAL" />
+    <result column="dfr" property="dfr" jdbcType="VARCHAR" />
+    <result column="qd" property="qd" jdbcType="VARCHAR" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="cjsj" property="cjsj" jdbcType="TIMESTAMP" />
+    <result column="gxsj" property="gxsj" jdbcType="TIMESTAMP" />
+    <result column="cjr" property="cjr" jdbcType="VARCHAR" />
+    <result column="sfsc" property="sfsc" jdbcType="CHAR" />
+    <result column="styj" property="styj" jdbcType="DECIMAL" />
+    <result column="ghzt" property="ghzt" jdbcType="CHAR" />
+    <result column="sfjh" property="sfjh" jdbcType="CHAR" />
+    <result column="ydid" property="ydid" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="selectOneVoRoomRz" resultType="com.kiah.tule.vo.VoRoomYd" parameterType="java.util.Map">
+    select tri.id as fjid,tri.no as fjno,tri.mc as fjmc, tri.lx as fjlx,tri.zt as fjzt,tri.cjr as fjcjr,trm.id as jlid,trm.rzts as jlrzts,trm.rzsj as jlrzsj,trm.tfsj as jltfsj,trm.yj as jlyj,trm.styj as jlstyj,trm.je as jlje,trm.dfr as jldfr,trm.qd as jlqd,trm.cjr as jlcjr,trm.bz as jlbz
+    from t_room_record trm,t_room_info tri
+    where trm.no=tri.no and trm.id=#{jlid} and tri.zt=#{fjzt})
+  </select>
+  
+  <insert id="insertXzRzjl" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <selectKey resultType="int" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() as id
+    </selectKey>
+    insert into t_room_record (
+    `no`,rzts,rzsj,tfsj,yj,je,dfr,qd,bz,cjsj,gxsj,cjr,sfsc,ghzt,sfjh,ydid
+    )
+    select
+    yd.`no`,yd.rzts,yd.rzsj,yd.tfsj,rz.yj,yd.je,yd.dfr,yd.qd,yd.bz,now(),now(),yd.jbr,'','否','0',yd.id
+    from (
+    select
+    t.yj
+    from t_room_record t
+    where t.id = #{oldId}) rz,(
+    select
+    t2.`no`,t2.rzts,t2.rzsj,t2.tfsj,t2.je,t2.dfr,t2.qd,t2.jbr,t2.id,t2.bz
+    from t_room_reservation t2
+    where t2.id = #{ydId}) yd
+  </insert>
+</mapper>
