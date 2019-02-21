@@ -143,6 +143,7 @@ function openModal(type){
 }
 var post_flag = false;
 function submit() {
+    //debugger;
     //如果正在提交则直接返回，停止执行
     if(post_flag) return;
     //标记当前状态为正在提交状态
