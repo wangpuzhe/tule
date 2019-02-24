@@ -142,11 +142,6 @@ public class RoomRecordServiceImpl implements RoomRecordService {
 
     @Override
     public void ruzhu(String roomCustomers, String roomId, String reservationId,String recordBz,String recordYj) throws Exception{
-        //修改房间状态
-        TRoomInfo tRoomInfo = new TRoomInfo();
-        tRoomInfo.setId(Integer.valueOf(roomId));
-        tRoomInfo.setZt("入住");
-        roomService.editRoom(tRoomInfo);
         //添加入住记录信息
         if(StringUtils.isNotEmpty(reservationId)){
             //更改预定记录"sfjh"为1
@@ -181,6 +176,11 @@ public class RoomRecordServiceImpl implements RoomRecordService {
                 tRoomCustomer.setJlid(recordId);
                 tRoomCustomerMapper.insertSelective(tRoomCustomer);
             }
+            //修改房间状态
+            TRoomInfo tRoomInfo = new TRoomInfo();
+            tRoomInfo.setId(Integer.valueOf(roomId));
+            tRoomInfo.setZt("入住");
+            roomService.editRoom(tRoomInfo);
         }
     }
 
@@ -198,7 +198,7 @@ public class RoomRecordServiceImpl implements RoomRecordService {
     @Override
     public AjaxJson yjrz(TRoomReservation tRoomReservation,String roomCustomers, String roomId, String recordBz, String recordYj) throws Exception{
         //预定
-        String reservationId ="";
+        String reservationId;
         AjaxJson ajaxJson =roomReservationService.addRoomReservation(tRoomReservation);
         if(StringUtils.isNotEmpty(ajaxJson.getCode())&&StringUtils.equals("0",ajaxJson.getCode())){
             Map map = (HashMap)ajaxJson.getResult();
