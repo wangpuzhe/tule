@@ -110,12 +110,7 @@ function yuding(){
         layer.msg("请选择时间",{icon:5});
     }
 }
-var yd_post_flag = false;
 function submit() {
-    //如果正在提交则直接返回，停止执行
-    if(yd_post_flag) return;
-    //标记当前状态为正在提交状态
-    yd_post_flag = true;
     if($('#loginForm').validator('isFormValid')) {
         //获取页面数据
         var info ={};
@@ -140,7 +135,6 @@ function submit() {
             data: info,
             dataType: "json",
             success: function (data) {
-                yd_post_flag =false; //在提交成功之后将标志标记为可提交状态
                 if(data.code==0){
                     layer.msg("预定成功", {icon: 6});
                     $('#addModal').modal('hide');
@@ -148,9 +142,6 @@ function submit() {
                 }else{
                     layer.alert(data.msg, {icon: 5});
                 }
-            },
-            error: function(){
-                yd_post_flag =false; //AJAX失败也需要将标志标记为可提交状态
             }
         })
     }
@@ -187,12 +178,7 @@ function yjrz() {
     }
 }
 
-var rz_post_flag = false;
 function yjrzSubmit() {
-    //如果正在提交则直接返回，停止执行
-    if(rz_post_flag) return;
-    //标记当前状态为正在提交状态
-    rz_post_flag = true;
     if($('#form_roomRecord').validator('isFormValid')){
         if($('#form_roomCustomer').validator('isFormValid')) {
             var ydxx = $("#form_roomRecord").serializeJson();
@@ -210,7 +196,6 @@ function yjrzSubmit() {
                 },
                 dataType: "json",
                 success: function (data) {
-                    rz_post_flag =false; //在提交成功之后将标志标记为可提交状态
                     if(data.code==0){
                         common.alertSuccessMsg(data.msg);
                         $('#yjrzModal').modal('hide');
@@ -219,9 +204,6 @@ function yjrzSubmit() {
                         $('#yjrzModal').modal('hide');
                         layer.alert(data.msg, {icon: 5},0);
                     }
-                },
-                error: function(){
-                    rz_post_flag =false; //AJAX失败也需要将标志标记为可提交状态
                 }
             })
         }

@@ -44,7 +44,8 @@
 	trc.jlid AS lkjlid,
 	trc.xm AS lkxm,
 	trc.dh AS lkdh,
-	trc.zjhm AS lkzjhm
+	trc.zjhm AS lkzjhm,
+	trm.ydid AS ydid
 	FROM t_room_record trm
 	LEFT JOIN t_room_info tri ON trm. NO = tri. NO
 	LEFT JOIN (select cc.* from t_room_customer cc,t_room_record dd where cc.jlid = dd.id GROUP BY cc.jlid) trc ON trm.id = trc.jlid

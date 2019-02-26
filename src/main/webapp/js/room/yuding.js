@@ -141,13 +141,7 @@ function openModal(type){
 
     }
 }
-var post_flag = false;
 function submit() {
-    //debugger;
-    //如果正在提交则直接返回，停止执行
-    if(post_flag) return;
-    //标记当前状态为正在提交状态
-    post_flag = true;
     var roomCustomer = $('#form_roomCustomer').serializeJson();
     if($('#form_roomCustomer').validator('isFormValid') && $('#form_roomRecord').validator('isFormValid')) {
         var url = ctx + "/roomRecord/ruzhu";
@@ -162,14 +156,10 @@ function submit() {
             },
             dataType: "json",
             success: function (data) {
-                post_flag =false; //在提交成功之后将标志标记为可提交状态
                 layer.msg("入住成功", {icon: 6});
                 cancel();
                 $('#ydTable').DataTable().ajax.reload();
-            },
-            error: function(){
-            post_flag =false; //AJAX失败也需要将标志标记为可提交状态
-        }
+            }
         })
     }
 }

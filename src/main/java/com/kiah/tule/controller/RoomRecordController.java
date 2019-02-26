@@ -185,8 +185,8 @@ public class RoomRecordController {
 
     @RequestMapping(value = "/xuzhu",method = RequestMethod.POST)
     @ResponseBody
-    public AjaxJson xuzhu(String id,String xzsj,String xzff,String xzts,String xzqd,String xzjbr,String xzbz){
-        return roomRecordServiceImpl.xuzhu(id,xzsj,xzff,xzts,xzqd,xzjbr,xzbz);
+    public AjaxJson xuzhu(String id,String xzsj,String xzff,String xzts,String xzqd,String xzjbr,String xzbz,String ydid){
+        return roomRecordServiceImpl.xuzhu(id,xzsj,xzff,xzts,xzqd,xzjbr,xzbz,ydid);
     }
 
     @RequestMapping(value = "/findLkxx",method = RequestMethod.POST)

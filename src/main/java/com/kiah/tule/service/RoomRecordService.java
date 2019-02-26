@@ -50,7 +50,7 @@ public interface RoomRecordService {
      * @param xzts  续住天数
      * @return
      */
-    AjaxJson xuzhu(String id,String xzsj,String xzff,String xzts,String xzqd,String xzjbr,String xzbz);
+    AjaxJson xuzhu(String id,String xzsj,String xzff,String xzts,String xzqd,String xzjbr,String xzbz,String ydid);
 
     /**
      * 根据名字查询旅客信息

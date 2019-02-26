@@ -1,7 +1,6 @@
 package com.kiah.tule.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.kiah.tule.mapper.TRoomReservationMapper;
 import com.kiah.tule.model.AjaxJson;
 import com.kiah.tule.model.DataTableResult;
 import com.kiah.tule.model.TRoomReservation;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/roomReservation")

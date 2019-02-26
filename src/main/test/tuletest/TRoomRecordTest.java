@@ -1,6 +1,5 @@
 package tuletest;
 
-import com.kiah.tule.model.TRoomRecord;
 import com.kiah.tule.service.RoomRecordService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

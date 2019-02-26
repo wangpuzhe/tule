@@ -27,6 +27,7 @@ public class VoRoomRz implements Serializable {
     private String lkxm;
     private String lkdh;
     private String lkzjhm;
+    private Integer ydid;
 
     public int getFjid() {
         return fjid;
@@ -194,5 +195,13 @@ public class VoRoomRz implements Serializable {
 
     public void setLkzjhm(String lkzjhm) {
         this.lkzjhm = lkzjhm;
+    }
+
+    public Integer getYdid() {
+        return ydid;
+    }
+
+    public void setYdid(Integer ydid) {
+        this.ydid = ydid;
     }
 }

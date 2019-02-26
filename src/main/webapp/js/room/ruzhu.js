@@ -46,6 +46,7 @@ function loadTable(url) {
         columns: [
             {"data": "fjid", "bSortable": true,"visible" : false,},
             {"data": "jlid", "bSortable": true,"visible" : false,},
+            {"data": "ydid", "bSortable": true,"visible" : false,},
             {"data": "fjno", "bSortable": true},
             {"data": "fjmc", "bSortable": false},
             {"data": "fjlx", "bSortable": false},
@@ -99,6 +100,7 @@ function openModal(type,row) {
     }
     if(undefined!=rows){
         $('#fjid').val(rows.fjid);
+        $('#ydid').val(rows.ydid);
         $('#fjno').val(rows.fjno);
         $('#fjmc').val(rows.fjmc);
         $('#fjlx').val(rows.fjlx);
@@ -213,6 +215,7 @@ function xuzhu(){
    $("#xzfjlx").val(row.fjlx);
    $("#xzfjzt").val(row.fjzt);
    $("#xztfsj").val(row.jltfsj);
+   $("#xzydid").val(row.ydid);
     $('#xzsj').datetimepicker({
         language: 'zh-CN',
         autoclose: true,
@@ -235,16 +238,17 @@ function xuzhu(){
 function xuzhuSubmit(){
     var url = ctx+"/roomRecord/xuzhu";
     if($('#form_xuru').validator('isFormValid')) {
+        debugger;
         $.ajax({
             url: url,
-            data: {id:$("#xzjlid").val(),xzsj:$("#xzsj").val(),xzff:$("#xzff").val(),xzts:$("#xzts").val(),xzqd:$("#xzqd").val(),xzjbr:$('#xzjbr').val(),xzbz:$('#xzbz').val()},
+            data: {id:$("#xzjlid").val(),xzsj:$("#xzsj").val(),xzff:$("#xzff").val(),xzts:$("#xzts").val(),xzqd:$("#xzqd").val(),xzjbr:$('#xzjbr').val(),xzbz:$('#xzbz').val(),ydid:$("#xzydid").val()},
             type: "post",
             dataType: "json",
             success: function (result) {
                 if ("0" == result.code) {
                     $('#xuzhuModal').modal('hide');
                     $('#rzTable').DataTable().ajax.reload();
-                    common.alertSuccessMsg(result.msg);
+                    common.alertSuccessMsg(result.msg);xuzhu
                 } else {
                     common.alertErrorMsg(result.msg);
                 }

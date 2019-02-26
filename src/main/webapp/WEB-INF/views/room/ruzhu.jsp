@@ -81,6 +81,7 @@
                         <tr>
                             <th style="display: none">房间id</th>
                             <th style="display: none">记录id</th>
+                            <th style="display: none">预定id</th>
                             <th>房间号</th>
                             <th>房间名称</th>
                             <th>房间类型</th>
@@ -150,6 +151,12 @@
                             <div class="form-group col-md-3">
                                 <label for="jlid">记录id: </label>
                                 <input type="text" class="form-control" id="jlid" name="id" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-row" style="display: none">
+                            <div class="form-group col-md-3">
+                                <label for="ydid">预定ID: </label>
+                                <input type="text" class="form-control" id="ydid" name="ydid" readonly="readonly">
                             </div>
                         </div>
                         <div class="form-row">
@@ -232,6 +239,7 @@
                     <fieldset>
                         <div class="form-row">
                             <input type="hidden" id="xzjlid">
+                            <input type="hidden" id="xzydid">
                             <input type="hidden" id="xztfsj">
                             <div class="form-group col-md-3">
                                 <label for="fjno">房间号: </label>

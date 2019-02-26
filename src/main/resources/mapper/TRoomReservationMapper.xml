@@ -31,7 +31,7 @@
 		or (t.rzsj &lt;=#{kssj} and t.tfsj &gt;= #{jssj})
 		or (t.tfsj &gt;= #{kssj} and t.tfsj &lt;= #{jssj})
 		or (t.rzsj &gt;= #{kssj} and t.tfsj &lt;= #{jssj}))
-	    and t.sfjh = '0' AND t.fjid = #{fjid}
+	    AND t.fjid = #{fjid}
   </select>
   <insert id="insertXzYdjl" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     <selectKey resultType="int" order="AFTER" keyProperty="id">

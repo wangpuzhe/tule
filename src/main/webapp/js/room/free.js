@@ -85,12 +85,8 @@ function openModal(){
     }
 
 }
-var free_post_flag = false;
+
 function submit() {
-    //如果正在提交则直接返回，停止执行
-    if(free_post_flag) return;
-    //标记当前状态为正在提交状态
-    free_post_flag = true;
     if($('#loginForm').validator('isFormValid')) {
         var data={};
         data.fjid = $('#kxTable').DataTable().rows(['.selected']).data()[0].id;
@@ -113,7 +109,6 @@ function submit() {
             data: data,
             dataType: "json",
             success: function (data) {
-                free_post_flag =false; //在提交成功之后将标志标记为可提交状态
                 if(data.code==0){
                     layer.msg("预定成功", {icon: 6});
                     cancel();
@@ -121,8 +116,6 @@ function submit() {
                 }else{
                     layer.alert(data.msg, {icon: 5},0);
                 }
-            },error:function () {
-                free_post_flag =false; //AJAX失败也需要将标志标记为可提交状态
             }
         })
     }

@@ -136,7 +136,14 @@ public class RoomRecordServiceImpl implements RoomRecordService {
         roomRecord.setGxsj(new Date());
         roomRecord.setJe(result);
         roomRecord.setSfjh("1");
+        Integer ydid = roomRecord.getYdid();
         int i = tRoomRecordMapper.updateByPrimaryKeySelective(roomRecord);
+        //更新预定退房时间
+        TRoomReservation tRoomReservation = new TRoomReservation();
+        tRoomReservation.setId(ydid);
+        tRoomReservation.setTfsj(new Date());
+        tRoomReservation.setGxsj(new Date());
+        tRoomReservationMapper.updateByPrimaryKeySelective(tRoomReservation);
         return i;
     }
 
@@ -168,6 +175,7 @@ public class RoomRecordServiceImpl implements RoomRecordService {
             roomRecord.setGhzt("否");
             tRoomRecordMapper.insert(roomRecord);
             Integer recordId= roomRecord.getId();
+            if(recordId!=null){
             //添加入住人员信息
             JSONArray kerenJsonArray = JSONArray.parseArray(roomCustomers);
             for(int i=0;i<kerenJsonArray.size();i++){
@@ -181,6 +189,7 @@ public class RoomRecordServiceImpl implements RoomRecordService {
             tRoomInfo.setId(Integer.valueOf(roomId));
             tRoomInfo.setZt("入住");
             roomService.editRoom(tRoomInfo);
+            }
         }
     }
 
@@ -211,7 +220,7 @@ public class RoomRecordServiceImpl implements RoomRecordService {
     }
 
     @Override
-    public AjaxJson xuzhu(String id, String xzsj, String xzff, String xzts,String xzqd,String xzjbr,String xzbz) {
+    public AjaxJson xuzhu(String id, String xzsj, String xzff, String xzts,String xzqd,String xzjbr,String xzbz,String ydid) {
         AjaxJson ajaxJson = new AjaxJson();
         String code = "0";
         String msg = "续住成功";
@@ -237,6 +246,12 @@ public class RoomRecordServiceImpl implements RoomRecordService {
                 ajaxJson.setMsg("房间:"+fjno+"   在"+tfsjStr+"到"+xzsj+"时间段内，已经预定！");
                 return ajaxJson;
             }
+            //更新old预定信息 退房时间
+            TRoomReservation oldRoomReservation = new TRoomReservation();
+            oldRoomReservation.setId(Integer.valueOf(ydid));
+            oldRoomReservation.setTfsj(new Date());
+            oldRoomReservation.setGxsj(new Date());
+            tRoomReservationMapper.updateByPrimaryKeySelective(oldRoomReservation);
             //添加续住预定信息 返回新预定id
             Map<String,String> mapYd = new HashMap<>();
             mapYd.put("id",null);

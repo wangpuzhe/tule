@@ -49,7 +49,7 @@
                         <div class="am-btn-toolbar">
                             <div class="am-btn-group am-btn-group-sm">
                                 <button type="button" class="am-btn am-btn-default am-btn-success" onClick="openModal('add')"><span class="am-icon-plus"></span> 新增</button>
-                                <button type="button" class="am-btn am-btn-default am-btn-secondary" onClick="openModal('edit')"><span class="am-icon-save"></span> 编辑</button>
+                                <%--<button type="button" class="am-btn am-btn-default am-btn-secondary" onClick="openModal('edit')"><span class="am-icon-save"></span> 编辑</button>--%>
                                 <%--<button type="button" class="am-btn am-btn-default am-btn-warning"><span class="am-icon-archive"></span> 审核</button>--%>
                                 <button type="button" class="am-btn am-btn-default am-btn-danger" onClick="del()"><span class="am-icon-trash-o"></span> 删除</button>
                             </div>
