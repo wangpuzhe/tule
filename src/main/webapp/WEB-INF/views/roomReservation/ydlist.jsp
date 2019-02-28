@@ -129,7 +129,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="dfrdhhm">订房人电话号码: </label>
-                            <input type="number" class="form-control" id="dfrdhhm" maxlength="11" required>
+                            <input type="number" class="form-control" id="dfrdhhm" maxlength="11">
                         </div>
                     </div>
                     <div class="form-row">
