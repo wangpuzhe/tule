@@ -19,7 +19,7 @@
       <!-- mybatis版本号 -->
       <mybatis.version>3.4.1</mybatis.version>
       <!-- mysql 版本号-->
-      <mysql.version>5.1.41</mysql.version>
+      <mysql.version>8.0.28</mysql.version>
       <!-- tk.mybatis -->
       <tk.mybatis.version>3.5.0</tk.mybatis.version>
       <persistence.version>1.0</persistence.version>
